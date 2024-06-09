@@ -128,3 +128,13 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# Custom
+package-lock.json
+avoid*
+prod.js
+prod/
+chrome/
+firefox/
+versions/
+index.html
