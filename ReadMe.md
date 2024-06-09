@@ -4,3 +4,5 @@ Automate filtering and sorting Facebook marketplace search results. Only runs on
 
 NOTE:
 Because Facebook marketplace runs on JavaScript, you may need to reload page if experiencing problems.
+
+![facebook-sort](img/facebook-sort-example.png)
