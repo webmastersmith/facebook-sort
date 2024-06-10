@@ -166,9 +166,9 @@ export function createStyleSheet() {
         --facebook-sort-btn-background-hover: #03399e;
         --facebook-sort-btn-shadow: #4892e0;
       }
-      /* form */
+      /* form -display: none is changed to 'flex' once correct page loads.*/
       #facebook-sort-form-id {
-        display: flex !important;
+        display: none;
         justify-content: center !important;
         align-items: center !important;
         padding-bottom: 1rem !important;
