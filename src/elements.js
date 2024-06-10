@@ -73,9 +73,9 @@ export function createForm(facebookFilterSort) {
     searchInput.className = 'inputBox facebook-sort-search-page-input';
     searchInput.type = 'number';
     searchInput.placeholder = '100';
-    searchInput.min = '25';
-    searchInput.max = '999';
-    searchInput.step = '25';
+    searchInput.min = 25;
+    searchInput.max = 500;
+    searchInput.step = 25;
     // add search page to form
     searchDiv.appendChild(searchInputLabel);
     searchDiv.appendChild(searchInput);
@@ -113,7 +113,7 @@ export function createForm(facebookFilterSort) {
     checkboxFilter.id = 'facebook-sort-checkbox-id';
     checkboxFilter.className = 'facebook-sort-checkbox';
     checkboxFilter.type = 'checkbox';
-    checkboxFilter.checked = true;
+    checkboxFilter.checked = false; // confusing if just trying it out.
     // checkbox filter label
     const checkboxLabel = document.createElement('label');
     checkboxLabel.htmlFor = 'facebook-sort-checkbox-id';
@@ -157,11 +157,12 @@ export function createForm(facebookFilterSort) {
 export function createStyleSheet() {
   try {
     const head = document.head || document.getElementsByTagName('head')[0];
-    const style = document.createElement('style');
-    head.appendChild(style);
+    const myStyle = document.createElement('style');
+    head.appendChild(myStyle);
     const textColor = '#03399e';
     const css = `
       :root {
+        --facebook-sort-name: #03399e;
         --facebook-sort-btn-background: #075ad3;
         --facebook-sort-btn-background-hover: #03399e;
         --facebook-sort-btn-shadow: #4892e0;
@@ -191,7 +192,7 @@ export function createStyleSheet() {
       /* title div */
       .facebook-sort-name {
         font-size: 3rem !important;
-        color: var(--facebook-sort-btn-background-hover) !important;
+        color: var(--facebook-sort-name) !important;
         font-weight: bold !important;
         padding: 0 !important;
         margin: 0 !important;
@@ -264,89 +265,39 @@ export function createStyleSheet() {
       }
       /* Button */
       .facebook-sort-btn {
-        display: flex !important;
-        justify-content: center !important;
-        align-items: center !important;
-        font-size: 24px !important;
-        text-align: center !important;
-        width: 175px !important;
-        height: 40px !important;
-        cursor: pointer !important;
-        outline: none !important;
-        color: #fff !important;
-        background-color: var(--facebook-sort-btn-background) !important;
-        border: none !important;
-        border-radius: 15px !important;
-        box-shadow: 0 9px var(--facebook-sort-btn-shadow) !important;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 24px;
+        text-align: center;
+        width: 175px;
+        height: 40px;
+        cursor: pointer;
+        outline: none;
+        color: #fff;
+        background-color: var(--facebook-sort-btn-background);
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 9px var(--facebook-sort-btn-shadow);
       }
       .facebook-sort-btn:hover {
-        background-color: var(--facebook-sort-btn-background-hover) !important;
-        box-shadow: 0 9px var(--facebook-sort-btn-background) !important;
+        background-color: var(--facebook-sort-btn-background-hover);
+        box-shadow: 0 9px var(--facebook-sort-btn-background);
       }
       .facebook-sort-btn:active {
-        background-color: var(--facebook-sort-btn-background-hover) !important;
-        box-shadow: 0 5px var() !important;
-        transform: translateY(4px) !important;
+        background-color: var(--facebook-sort-btn-background-hover);
+        box-shadow: 0 5px var();
+        transform: translateY(4px);
       }
-  
-      /* Start Loading Pages */
-      #facebook-sort-loading-wrapper {
-        position: relative !important;
-        margin-top: 0.5rem !important;
-        margin-bottom: 2rem !important;
-      }
-      .filterResults {
-        display: inline !important;
-        font-size: 3rem !important;
-        color: var(--facebook-sort-btn-background-hover) !important;
-        font-weight: bold !important;
-        margin: 3rem 0 !important;
-      }
-      .facebook-sort-lds-ring {
-        display: inline !important;
-        position: absolute !important;
-        top: -15px !important;
-        left: 505px !important;
-        width: 60px !important;
-        height: 60px !important;
-      }
-      .facebook-sort-lds-ring div {
-        box-sizing: border-box !important;
-        display: block !important;
-        position: absolute !important;
-        width: 40px !important;
-        height: 40px !important;
-        margin: 8px !important;
-        border: 8px solid var(--facebook-sort-btn-background-hover) !important;
-        border-radius: 50% !important;
-        animation: facebook-sort-lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite !important;
-        border-color: var(--facebook-sort-btn-background-hover) transparent transparent transparent !important;
-      }
-      .facebook-sort-lds-ring div:nth-child(1) {
-        animation-delay: -0.45s;
-      }
-      .facebook-sort-lds-ring div:nth-child(2) {
-        animation-delay: -0.3s;
-      }
-      .facebook-sort-lds-ring div:nth-child(3) {
-        animation-delay: -0.15s;
-      }
-      @keyframes facebook-sort-lds-ring {
-        0% {
-          transform: rotate(0deg);
-        }
-        100% {
-          transform: rotate(360deg);
-        }
-      }
+      /* webmastersmith watermark */
       .facebook-sort-signature {
-        position: absolute !important;
-        bottom: -1rem !important;
-        color: rgba(0, 0, 0, 0.2) !important;
-        margin: 0 !important;
+        position: absolute;
+        bottom: -1rem;
+        color: rgba(0, 0, 0, 0.2);
+        margin: 0;
       }
           `;
-    style.appendChild(document.createTextNode(css));
+    myStyle.appendChild(document.createTextNode(css));
     return head;
   } catch (e) {
     console.log(e);

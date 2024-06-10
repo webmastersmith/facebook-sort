@@ -1,10 +1,6 @@
 import { sleep, getItems } from './utils';
 import { createForm, createStyleSheet } from './elements';
 
-// notes: add style="display: none", then add price, location as attributes to div.
-// element.style.display = "none"
-// setAttribute(name, value)
-
 (async function () {
   // create form.
   const head = createStyleSheet();
@@ -12,40 +8,32 @@ import { createForm, createStyleSheet } from './elements';
   // Create form and content
   const { form, searchInput, checkboxFilter, removeInput, btn } = createForm(start);
   if (!form) throw new Error('Could not create form.');
-  let container;
 
   // only run on facebook market.
   // let marketplaceSearchHasLoaded = false;
   const marketplaceRegex = /facebook\.com\/marketplace/i;
   if (marketplaceRegex.test(location.href)) {
-    // Get container element. -flex container with all search results.
-    container = document.querySelector('div[role="main"] div[style^="max-width"] > div:last-of-type');
-    if (!container) throw new Error('Could not get container div.');
-
-    let searchTermsDiv;
-    searchTermsDiv = document.querySelector(
+    let searchTermsDiv = document.querySelector(
       'div[role="navigation"][aria-label="Marketplace sidebar"] > div > div:nth-of-type(2)'
     );
-    // Insert Form
-    searchTermsDiv.after(form);
 
     // make sure marketplace page is search.
     const marketplaceSearchRegex = /facebook\.com\/marketplace\/.*\/search.?\?query/i;
     const observer = new MutationObserver(function (mutations) {
-      console.log('mutation observer ran');
+      // console.log('mutation observer ran');
       if (marketplaceSearchRegex.test(location.href)) {
         const isOnPage = document.getElementById('facebook-sort-form-id');
-        console.log('isOnPage', isOnPage);
+        // console.log('isOnPage', isOnPage);
         if (!isOnPage) {
           searchTermsDiv = document.querySelector(
             'div[role="navigation"][aria-label="Marketplace sidebar"] > div > div:nth-of-type(2)'
           );
           searchTermsDiv.after(form);
-          console.log('attached form to page');
+          // console.log('attached form to page');
         }
         form.style.display = 'flex';
         // marketplaceSearchHasLoaded = true;
-        console.log(`Search Page Found ${location.href}`);
+        // console.log(`Search Page Found ${location.href}`);
       } else {
         form.style.display = 'none';
         // marketplaceSearchHasLoaded = false;
@@ -63,9 +51,16 @@ import { createForm, createStyleSheet } from './elements';
     // disable function till finished running.
     if (!canStart) return;
     canStart = false;
+    const root = document.querySelector(':root');
+    root.style.setProperty('--facebook-sort-btn-background', '#E0E0E0');
+    root.style.setProperty('--facebook-sort-btn-background-hover', '#E0E0E0');
+    root.style.setProperty('--facebook-sort-btn-shadow', '#E0E0E0');
+    btn.style.cursor = 'wait';
 
     // custom
-    const desiredItems = +searchInput?.value || 100; // returns empty string if no value.
+
+    let desiredItems = +searchInput?.value || 100; // returns empty string if no value.
+    if (desiredItems > 500) desiredItems = 500;
     const isFilter = checkboxFilter?.checked ?? true; // only true if null/undefined.
     const removeList = removeInput?.value?.split(',') ?? []; // only if null/undefined.
     // console.log('desiredItems, isFilter, removeList', desiredItems, isFilter, removeList);
@@ -73,15 +68,11 @@ import { createForm, createStyleSheet } from './elements';
       // count for removing els already in array.
 
       // loop until desired items reached.
+      const container = document.querySelector('div[role="main"] div[style^="max-width"] > div:last-of-type');
+      if (!container) throw new Error('Could not get container div.');
       let count = 0;
-      while (
-        document.querySelectorAll('div[role="main"] div[style^="max-width"][style*="min-width"]').length <
-        desiredItems
-      ) {
-        console.log(
-          'Total Child Items:',
-          document.querySelectorAll('div[role="main"] div[style^="max-width"][style*="min-width"]').length
-        );
+      while (container.childNodes.length < desiredItems) {
+        console.log('Total Child Items:', container.childNodes.length);
         // prevent run-away script.
         if (count > 30) return;
         count++;
@@ -99,6 +90,8 @@ import { createForm, createStyleSheet } from './elements';
           ?.split(' ') ?? [];
 
       // add attributes to child elements. - nothing is returned.
+      // Get container element. -flex container with all search results.
+      // const container = document.querySelector('div[role="main"] div[style^="max-width"] > div:last-of-type');
       const childArr = [...container.childNodes];
       getItems(childArr, searchTerms, removeList, isFilter);
 
@@ -110,6 +103,10 @@ import { createForm, createStyleSheet } from './elements';
       window.scrollTo(0, 0);
       // console.log('Total Items:', container.childNodes.length);
       canStart = true;
+      root.style.setProperty('--facebook-sort-btn-background', '#075ad3');
+      root.style.setProperty('--facebook-sort-btn-background-hover', '#03399e');
+      root.style.setProperty('--facebook-sort-btn-shadow', '#4892e0');
+      btn.style.cursor = 'pointer';
     } catch (error) {
       console.error(error);
       return;
