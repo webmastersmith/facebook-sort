@@ -97,9 +97,9 @@ import { createForm, createStyleSheet } from './elements';
         'div[role="main"] div[style^="max-width"]'
       ).parentElement;
       const parentContainerChildren = parentContainerDiv.childNodes;
-      for (const parentEl of parentContainerChildren) {
+      for (const parentChild of parentContainerChildren) {
         // loop until desired items reached.
-        const container = parentEl.querySelector('div[style^="max-width"] > div:last-of-type');
+        const container = parentChild.querySelector('div[style^="max-width"] > div:last-of-type');
         const childArr = [...container.childNodes];
         getItems(childArr, searchTerms, removeList, isFilter);
         // sort least to great
