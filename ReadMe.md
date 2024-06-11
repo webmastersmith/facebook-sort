@@ -1,6 +1,6 @@
 # Facebook-Sort
 
-- Automate filtering and sorting Facebook marketplace search results. Only runs on the page after you 'search' for item.
+- Automate filtering and sorting Facebook marketplace search results. Only runs on the _facebook.com/marketplace/_ page **after** you 'search' for item.
 - [Firefox Facebook-Sort](https://addons.mozilla.org/en-US/firefox/addon/facebook-sort/)
 
 - NOTES:

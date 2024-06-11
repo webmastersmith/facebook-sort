@@ -67,14 +67,17 @@ import { createForm, createStyleSheet } from './elements';
     try {
       // count for removing els already in array.
 
-      // loop until desired items reached.
-      const container = document.querySelector('div[role="main"] div[style^="max-width"] > div:last-of-type');
-      if (!container) throw new Error('Could not get container div.');
       let count = 0;
-      while (container.childNodes.length < desiredItems) {
-        console.log('Total Child Items:', container.childNodes.length);
+      while (
+        document.querySelectorAll('a[href*="/marketplace/item"] > div > div:last-of-type').length <
+        desiredItems
+      ) {
+        console.log(
+          'Total Child Items:',
+          document.querySelectorAll('a[href*="/marketplace/item"] > div > div:last-of-type').length
+        );
         // prevent run-away script.
-        if (count > 30) return;
+        if (count > 20) break;
         count++;
         // scroll to bottom of screen to load more.
         window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
@@ -89,16 +92,22 @@ import { createForm, createStyleSheet } from './elements';
           ?.value?.trim()
           ?.split(' ') ?? [];
 
-      // add attributes to child elements. - nothing is returned.
-      // Get container element. -flex container with all search results.
-      // const container = document.querySelector('div[role="main"] div[style^="max-width"] > div:last-of-type');
-      const childArr = [...container.childNodes];
-      getItems(childArr, searchTerms, removeList, isFilter);
+      // returns array of childNodes. Sometimes it's split into two or more divs.
+      const parentContainerDiv = document.querySelector(
+        'div[role="main"] div[style^="max-width"]'
+      ).parentElement;
+      const parentContainerChildren = parentContainerDiv.childNodes;
+      for (const parentEl of parentContainerChildren) {
+        // loop until desired items reached.
+        const container = parentEl.querySelector('div[style^="max-width"] > div:last-of-type');
+        const childArr = [...container.childNodes];
+        getItems(childArr, searchTerms, removeList, isFilter);
+        // sort least to great
+        childArr.sort((a, b) => +a.dataset.price - +b.dataset.price);
+        // console.log(items);
+        container.replaceChildren(...childArr);
+      }
 
-      // sort least to great
-      childArr.sort((a, b) => +a.dataset.price - +b.dataset.price);
-      // console.log(items);
-      container.replaceChildren(...childArr);
       // scroll to top of window
       window.scrollTo(0, 0);
       // console.log('Total Items:', container.childNodes.length);
