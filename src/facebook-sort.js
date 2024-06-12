@@ -58,7 +58,6 @@ import { createForm, createStyleSheet } from './elements';
     btn.style.cursor = 'wait';
 
     // custom
-
     let desiredItems = +searchInput?.value || 100; // returns empty string if no value.
     if (desiredItems > 500) desiredItems = 500;
     const isFilter = checkboxFilter?.checked ?? true; // only true if null/undefined.
