@@ -30,6 +30,7 @@ export function getItems(slicedItems, searchTerms, removeList = [], isFilter = t
     const location = dataItems[2]?.innerText?.trim() || '';
     const searchText = `${title} ${location}`;
     itemContainer.setAttribute('data-search-text', searchText); // el.dataset.searchText
+    itemContainer.style.display = 'flex';
     // Check if filter box is checked, searchTerms exist and every searchTerms matched.
     if (isFilter && searchTerms[0] && !isTitle(searchTerms, searchText)) itemContainer.style.display = 'none';
     // console.log('past dedupe');

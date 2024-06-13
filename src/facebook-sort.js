@@ -6,7 +6,7 @@ import { createForm, createStyleSheet } from './elements';
   const head = createStyleSheet();
   if (!head) throw new Error('Could not attach style sheet.');
   // Create form and content
-  const { form, searchInput, checkboxFilter, removeInput, btn } = createForm(start);
+  const { form, searchInput, checkboxFilter, removeInput, btn, pageItemsSpan } = createForm(start);
   if (!form) throw new Error('Could not create form.');
 
   // only run on facebook market.
@@ -17,6 +17,7 @@ import { createForm, createStyleSheet } from './elements';
       'div[role="navigation"][aria-label="Marketplace sidebar"] > div > div:nth-of-type(2)'
     );
 
+    let totalItems = 0;
     // make sure marketplace page is search.
     const marketplaceSearchRegex = /facebook\.com\/marketplace\/.*\/search.?\?query/i;
     const observer = new MutationObserver(function (mutations) {
@@ -30,6 +31,16 @@ import { createForm, createStyleSheet } from './elements';
           );
           searchTermsDiv.after(form);
           // console.log('attached form to page');
+        }
+        // console.log('mutation observer ran on search page');
+        // check how many items with every mutation.
+        const items = document.querySelectorAll(
+          'a[href*="/marketplace/item"] > div > div:last-of-type'
+        ).length;
+        // only run once. Each time runs, creates a mutation
+        if (items !== totalItems) {
+          totalItems = items;
+          pageItemsSpan.innerText = items;
         }
         form.style.display = 'flex';
         // marketplaceSearchHasLoaded = true;
@@ -71,10 +82,6 @@ import { createForm, createStyleSheet } from './elements';
         document.querySelectorAll('a[href*="/marketplace/item"] > div > div:last-of-type').length <
         desiredItems
       ) {
-        console.log(
-          'Total Child Items:',
-          document.querySelectorAll('a[href*="/marketplace/item"] > div > div:last-of-type').length
-        );
         // prevent run-away script.
         if (count > 20) break;
         count++;

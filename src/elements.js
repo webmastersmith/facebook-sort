@@ -43,13 +43,13 @@ export function createForm(facebookFilterSort) {
     const allContentDiv = document.createElement('div');
     allContentDiv.className = 'all-content-wrapper';
 
-    // Facebook Sort Text
+    // Facebook Sort Title
     const facebookSortPar = document.createElement('p');
     facebookSortPar.className = 'facebook-sort-name';
     facebookSortPar.innerText = 'Facebook Sort';
     allContentDiv.appendChild(facebookSortPar);
 
-    // Container Div. Wrap everything not FacebookSort paragraph.
+    // Container Div. Wrap everything not 'Facebook Sort' title.
     const containerDiv = document.createElement('div');
     containerDiv.className = 'facebook-sort-search-btn-wrapper';
 
@@ -102,6 +102,17 @@ export function createForm(facebookFilterSort) {
     inputContainerDiv.appendChild(searchDiv);
     inputContainerDiv.appendChild(removeDiv);
 
+    // page items: 350
+    const pageItemsP = document.createElement('p');
+    pageItemsP.className = 'facebook-sort-page-items';
+    pageItemsP.innerText = 'Page Items: ';
+    const pageItemsSpan = document.createElement('span');
+    pageItemsSpan.id = 'facebook-sort-page-items';
+    pageItemsSpan.innerText = '';
+    pageItemsP.appendChild(pageItemsSpan);
+    // add to containerDiv
+    containerDiv.append(pageItemsP);
+
     // checkbox & button div
     const checkboxBtnDiv = document.createElement('div');
     checkboxBtnDiv.id = 'facebook-sort-checkbox-btn-id';
@@ -148,7 +159,7 @@ export function createForm(facebookFilterSort) {
     allContentDiv.appendChild(webmastersmith);
     form.appendChild(allContentDiv);
 
-    return { form, checkboxFilter, searchInput, btn, removeInput };
+    return { form, checkboxFilter, searchInput, btn, removeInput, pageItemsSpan };
   } catch (e) {
     console.log('Could not create the form', e);
   }
@@ -204,14 +215,13 @@ export function createStyleSheet() {
         flex-direction: column !important;
         justify-content: center !important;
         align-items: center !important;
-        gap: 1.5rem !important;
       }
       /* all input container */
       .facebook-sort-input-container {
         display: flex !important;
         justify-content: center !important;
         align-items: center !important;
-        gap: 1.5rem !important;
+        gap: 0.5rem !important;
       }
 
       /* div around search input and label */
@@ -248,6 +258,16 @@ export function createStyleSheet() {
       
       /* input label*/
       .facebook-sort-search-page-label {    }
+
+      /* Page Items */
+      .facebook-sort-page-items {
+        align-self: start;
+        margin: 0.5rem 1rem;
+        color: var(--facebook-sort-name);
+      }
+      .facebook-sort-page-items span {
+        color: red;
+      }
       
       /* Checkbox & Button */
       #facebook-sort-checkbox-btn-id {
